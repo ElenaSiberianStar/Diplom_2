@@ -10,7 +10,7 @@ import praktikum.client.UserClient;
 import praktikum.generator.UserGenerator;
 import praktikum.model.Order;
 import praktikum.model.User;
-import static io.restassured.RestAssured.given;
+
 
 import java.util.List;
 
@@ -37,11 +37,11 @@ public class OrderTest {
         accessToken = createResponse.extract().path("accessToken");
 
         // Динамически запрашиваем актуальные ID ингредиентов
-        validIngredients = given()
-                .baseUri("https://qa-stellarburgers.education-services.ru")
-                .get("/api/ingredients")
-                .then()
-                .extract().path("data._id");
+        ValidatableResponse ingredientsResponse = orderClient.getIngredients();
+        validIngredients = ingredientsResponse.extract().path("data._id");
+
+
+
     }
 
     @After

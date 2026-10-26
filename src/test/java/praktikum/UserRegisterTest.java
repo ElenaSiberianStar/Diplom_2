@@ -71,4 +71,30 @@ public class UserRegisterTest {
                 .body("success", equalTo(false))
                 .body("message", equalTo("Email, password and name are required fields"));
     }
+
+    @Test
+    @DisplayName("Нельзя зарегистрировать пользователя без пароля")
+    public void cannotRegisterUserWithoutPassword() {
+        user.setPassword(null);
+
+        ValidatableResponse response = userClient.create(user);
+
+        response.assertThat()
+                .statusCode(SC_FORBIDDEN)
+                .body("success", equalTo(false))
+                .body("message", equalTo("Email, password and name are required fields"));
+    }
+
+    @Test
+    @DisplayName("Нельзя зарегистрировать пользователя без имени")
+    public void cannotRegisterUserWithoutName() {
+        user.setName(null);
+
+        ValidatableResponse response = userClient.create(user);
+
+        response.assertThat()
+                .statusCode(SC_FORBIDDEN)
+                .body("success", equalTo(false))
+                .body("message", equalTo("Email, password and name are required fields"));
+    }
 }

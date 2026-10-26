@@ -6,41 +6,49 @@ import praktikum.model.Order;
 
 import static io.restassured.RestAssured.given;
 
-public class OrderClient {
+public class OrderClient extends BaseApiClient {
 
-    private final String BASE_URL = "https://qa-stellarburgers.education-services.ru";
+
 
     @Step("Создание заказа с авторизацией")
     public ValidatableResponse createOrder(Order order, String accessToken) {
         return given()
-                .header("Content-type", "application/json")
+                .spec(getBaseSpec())
                 .header("Authorization", accessToken)
-                .baseUri(BASE_URL)
+
                 .body(order)
                 .when()
-                .post("/api/orders")
+                .post(Endpoints.ORDERS)
                 .then();
     }
 
     @Step("Создание заказа без авторизации")
     public ValidatableResponse createOrderWithoutAuth(Order order) {
         return given()
-                .header("Content-type", "application/json")
-                .baseUri(BASE_URL)
+                .spec(getBaseSpec())
+
                 .body(order)
                 .when()
-                .post("/api/orders")
+                .post(Endpoints.ORDERS)
                 .then();
     }
 
     @Step("Получение заказов конкретного пользователя")
     public ValidatableResponse getUserOrders(String accessToken) {
         return given()
-                .header("Content-type", "application/json")
+                .spec(getBaseSpec())
                 .header("Authorization", accessToken)
-                .baseUri(BASE_URL)
+
                 .when()
-                .get("/api/orders")
+                .get(Endpoints.ORDERS)
+                .then();
+    }
+    @Step("Получение списка ингредиентов")
+    public ValidatableResponse getIngredients() {
+        return given()
+                .spec(getBaseSpec())
+                .when()
+                .get(Endpoints.INGREDIENTS)
                 .then();
     }
 }

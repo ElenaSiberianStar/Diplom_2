@@ -6,40 +6,40 @@ import praktikum.model.User;
 
 import static io.restassured.RestAssured.given;
 
-public class UserClient {
+public class UserClient extends BaseApiClient {
 
-    // Базовый URL для всех запросов Stellar Burgers
-    private final String BASE_URL = "https://qa-stellarburgers.education-services.ru";
+
+
 
     @Step("Создание пользователя (регистрация)")
     public ValidatableResponse create(User user) {
         return given()
-                .header("Content-type", "application/json")
-                .baseUri(BASE_URL)
+
+                .spec(getBaseSpec())
                 .body(user)
                 .when()
-                .post("/api/auth/register")
+                .post(Endpoints.REGISTER)
                 .then();
     }
 
     @Step("Логин пользователя")
     public ValidatableResponse login(User user) {
         return given()
-                .header("Content-type", "application/json")
-                .baseUri(BASE_URL)
+
+                .spec(getBaseSpec())
                 .body(user)
                 .when()
-                .post("/api/auth/login")
+                .post(Endpoints.LOGIN)
                 .then();
     }
 
     @Step("Удаление пользователя")
     public ValidatableResponse delete(String accessToken) {
         return given()
-                .header("Authorization", accessToken)
-                .baseUri(BASE_URL)
+
+                .spec(getBaseSpec())
                 .when()
-                .delete("/api/auth/user")
+                .delete(Endpoints.USER)
                 .then();
     }
 }

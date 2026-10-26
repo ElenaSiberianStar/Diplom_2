@@ -52,8 +52,22 @@ public class UserLoginTest {
     @Test
     @DisplayName("Нельзя войти с неверным паролем")
     public void cannotLoginWithWrongPassword() {
-        // Указываем неверный пароль
+        // Передаем правильный email, но заведомо неверный пароль
         User wrongCredentials = new User(user.getEmail(), "wrong_password_123", null);
+
+        ValidatableResponse response = userClient.login(wrongCredentials);
+
+        response.assertThat()
+                .statusCode(SC_UNAUTHORIZED)
+                .body("success", equalTo(false))
+                .body("message", equalTo("email or password are incorrect"));
+    }
+    @Test
+    @DisplayName("Нельзя войти с неверным (несуществующим) логином")
+    public void cannotLoginWithWrongEmail() {
+        // Генерируем случайный email, которого точно нет в базе, но оставляем правильный пароль
+        String fakeEmail = "fake_" + user.getEmail();
+        User wrongCredentials = new User(fakeEmail, user.getPassword(), null);
 
         ValidatableResponse response = userClient.login(wrongCredentials);
 
