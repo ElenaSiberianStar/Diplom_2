@@ -1,6 +1,7 @@
 package praktikum;
 
 import io.qameta.allure.junit4.DisplayName;
+import io.qameta.allure.Description;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
@@ -37,6 +38,7 @@ public class UserLoginTest {
 
     @Test
     @DisplayName("Успешный вход под существующим пользователем")
+    @Description("Проверка успешной авторизации с валидными e-mail и паролем")
     public void userCanLogin() {
         // Создаем объект с теми же учетными данными для логина (можно использовать только email и password)
         User credentials = new User(user.getEmail(), user.getPassword(), null);
@@ -51,6 +53,7 @@ public class UserLoginTest {
 
     @Test
     @DisplayName("Нельзя войти с неверным паролем")
+    @Description("Проверка ошибки авторизации при передаче правильного email и неверного пароля")
     public void cannotLoginWithWrongPassword() {
         // Передаем правильный email, но заведомо неверный пароль
         User wrongCredentials = new User(user.getEmail(), "wrong_password_123", null);
@@ -64,6 +67,7 @@ public class UserLoginTest {
     }
     @Test
     @DisplayName("Нельзя войти с неверным (несуществующим) логином")
+    @Description("Проверка ошибки авторизации при передаче несуществующего email")
     public void cannotLoginWithWrongEmail() {
         // Генерируем случайный email, которого точно нет в базе, но оставляем правильный пароль
         String fakeEmail = "fake_" + user.getEmail();

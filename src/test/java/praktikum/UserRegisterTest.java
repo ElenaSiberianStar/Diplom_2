@@ -1,6 +1,7 @@
 package praktikum;
 
 import io.qameta.allure.junit4.DisplayName;
+import io.qameta.allure.Description;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
@@ -34,6 +35,7 @@ public class UserRegisterTest {
 
     @Test
     @DisplayName("Успешная регистрация уникального пользователя")
+    @Description("Проверяем успешное создание нового пользователя при передаче всех валидных полей")
     public void userCanBeRegistered() {
         ValidatableResponse response = userClient.create(user);
 
@@ -47,6 +49,7 @@ public class UserRegisterTest {
 
     @Test
     @DisplayName("Нельзя зарегистрировать двух одинаковых пользователей")
+    @Description("Проверяем получение ошибки 403 при попытке повторной регистрации с тем же email")
     public void cannotRegisterSameUserTwice() {
         ValidatableResponse firstResponse = userClient.create(user);
         accessToken = firstResponse.extract().path("accessToken");
@@ -61,6 +64,7 @@ public class UserRegisterTest {
 
     @Test
     @DisplayName("Нельзя зарегистрировать пользователя без email")
+    @Description("Проверяем получение ошибки при отсутствии обязательного поля email")
     public void cannotRegisterUserWithoutEmail() {
         user.setEmail(null);
 
@@ -74,6 +78,7 @@ public class UserRegisterTest {
 
     @Test
     @DisplayName("Нельзя зарегистрировать пользователя без пароля")
+    @Description("Проверяем получение ошибки при отсутствии обязательного поля password")
     public void cannotRegisterUserWithoutPassword() {
         user.setPassword(null);
 
@@ -87,6 +92,7 @@ public class UserRegisterTest {
 
     @Test
     @DisplayName("Нельзя зарегистрировать пользователя без имени")
+    @Description("Проверяем получение ошибки при отсутствии обязательного поля name")
     public void cannotRegisterUserWithoutName() {
         user.setName(null);
 

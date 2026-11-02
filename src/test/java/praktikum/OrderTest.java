@@ -1,6 +1,7 @@
 package praktikum;
 
 import io.qameta.allure.junit4.DisplayName;
+import io.qameta.allure.Description;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
@@ -53,6 +54,7 @@ public class OrderTest {
 
     @Test
     @DisplayName("Создание заказа с авторизацией и с ингредиентами")
+    @Description("Проверяем успешное создание заказа авторизованным пользователем с валидными ингредиентами")
     public void createOrderWithAuthAndIngredients() {
         Order order = new Order(validIngredients);
 
@@ -68,6 +70,7 @@ public class OrderTest {
 
     @Test
     @DisplayName("Создание заказа без авторизации")
+    @Description("Проверяем, что неавторизованный пользователь не может создать заказ (ошибка 401)")
     public void createOrderWithoutAuth() {
         Order order = new Order(validIngredients);
 
@@ -81,6 +84,7 @@ public class OrderTest {
 
     @Test
     @DisplayName("Создание заказа без ингредиентов возвращает ошибку")
+    @Description("Проверяем ошибку 400 при попытке создать заказ с пустым списком ингредиентов")
     public void createOrderWithoutIngredients() {
         Order order = new Order(List.of()); // Пустой список ингредиентов
 
@@ -94,6 +98,7 @@ public class OrderTest {
 
     @Test
     @DisplayName("Создание заказа с неверным хешем ингредиентов возвращает ошибку сервера")
+    @Description("Проверяем ответ сервера при передаче несуществующего идентификатора ингредиента")
     public void createOrderWithInvalidIngredientHash() {
         Order order = new Order(List.of("invalid_hash_12345"));
 
